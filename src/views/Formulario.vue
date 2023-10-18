@@ -52,6 +52,10 @@
 const loguear = ()=>{
     emit('update:tieneCuenta',true)
 }
+const handleIconClick = (node, e) => {
+  node.props.suffixIcon = node.props.suffixIcon === 'eye' ? 'eyeClosed' : 'eye'
+  node.props.type = node.props.type === 'password' ? 'text' : 'password'
+}
 </script>
 
 <template>
