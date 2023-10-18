@@ -64,6 +64,7 @@ const ObtenerToken = () => {
       </h1>
     </div>
     <RouterLink 
+    v-if="admin"
     style=" float: left; margin-top: -6rem; background-color: #1c8344; width: 300px; height: 50px; text-align: center; padding: 14px; font-size: 1.5em;"
     to="admin"
     >Admin-Panel</RouterLink>

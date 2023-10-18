@@ -27,7 +27,7 @@ import ImagenBackgraound from '../assets/img/votacionbg.jpg'
     <div>
         <h1 class="  text-center text-green-500 text-5xl font-bold ">PANEL ADMIN</h1>
 
-        <div class="flex justify-between">
+        <div class="flex ">
 
             <RouterLink
                 style="  background-color: #22c55e; width: 300px; height: 70px; text-align: center; padding: 13px; font-size: 1.5em;"
