@@ -1,20 +1,24 @@
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-const router = useRouter()
+import { ref, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import RouterLink from '../components/UI/RouterLink.vue';
 
+const router = useRouter()
+const route = useRoute()
 defineProps({
     titulo: {
         type: String,
 
     }
 })
-
+onMounted(() => {
+    seleccion.value = route.params.seleccion
+})
 const seleccion = ref('')
 
 const redirigirVotos = () => {
     router.push({ name: 'Votos', params: { seleccion: seleccion.value } })
-} 
+}
 import ImagenBackgraound from '../assets/img/votacionbg.jpg'
 
 </script>
@@ -22,36 +26,46 @@ import ImagenBackgraound from '../assets/img/votacionbg.jpg'
 <template>
     <div>
         <h1 class="  text-center text-green-500 text-5xl font-bold ">PANEL ADMIN</h1>
-        <!-- <div class="imagen_fondo absolute ">
-            <img class="bg-cover w-screen bg-center " :src="ImagenBackgraound" alt="imagen_fondo" srcset="">
-        </div>
-         -->
-        <div class="contenedor ">
-            <div class=" w-80 min-h-0  m-12 p-7 shadow-2xl cursor-pointer max-[600px]:w-80">
-                <h1 class="text-2xl  font-bold uppercase  text-center">Ver votos</h1>
-                <div class="flex mt-10 justify-center space-x-10 ">
 
-                    <FormKit v-model="seleccion" type="select" label="Selecione el cargo" placeholder="Selecione"
-                        name="small_country" :options="[
-                            'Alcalde',
-                            'Gobernador',
-                            'Junta comunal',
-                            'Representante SENA',
-                            'Asamblea'
-                        ]" help="Elige una opción para poder continuar" />
+        <div class="flex justify-between">
 
-                </div>
-                <div class="boton flex justify-center ">
+            <RouterLink
+                style="  background-color: #22c55e; width: 300px; height: 70px; text-align: center; padding: 13px; font-size: 1.5em;"
+                to="formCandidato">Registrar Candidato
+            </RouterLink>
+            <div class="votos ">
+            <div class="contenedor  ">
+                <div class=" w-80 min-h-0  m-12 p-7 shadow-2xl cursor-pointer max-[600px]:w-80">
+                    <h1 class="text-2xl  font-bold uppercase  text-center">Ver votos</h1>
+                    <div class="flex mt-10 justify-center space-x-10 ">
 
-                    <FormKit
-                        style="background-color:#22c55e ; width: 218px; height: 50px; text-align:center;  padding: 15px;"
-                        class=" " v-if="seleccion" type="button" @click="redirigirVotos">
-                        <p>Ver votos de <span class="font-bold"> {{ seleccion }}</span></p>
+                        <FormKit v-model="seleccion" type="select" label="Selecione el cargo" placeholder="Selecione"
+                            name="small_country" :options="[
+                                'Alcalde',
+                                'Gobernador',
+                                'Junta comunal',
+                                'Representante SENA',
+                                'Asamblea'
+                            ]" help="Elige una opción para poder continuar" />
 
-                    </FormKit>
+                    </div>
+                    <div class="boton flex justify-center ">
+
+                        <FormKit
+                            style="background-color:#22c55e ; width: 218px; height: 50px; text-align:center;  padding: 15px;"
+                            class=" " v-if="seleccion" type="button" @click="redirigirVotos">
+                            <p>Ver votos de <span class="font-bold"> {{ seleccion }}</span></p>
+
+                        </FormKit>
+                    </div>
                 </div>
             </div>
+
+
         </div>
+
+        </div>
+
 
 
 

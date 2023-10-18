@@ -47,6 +47,12 @@ const router = createRouter({
       path: '/login',
       name: 'Login',
       component: () => import('../views/Login.vue'),
+    },{
+      path: '/admin',
+      name: 'admin',
+      component: () => import('../views/DashboardAdmin.vue'),
+      // Ruta protegida
+      meta: { requireAuth: true },
     }
   ]
 })

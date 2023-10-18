@@ -1,12 +1,16 @@
 <script setup>
 
 import { RouterView,useRouter } from 'vue-router'
+import RouterLink from './components/UI/RouterLink.vue';
+
 import {onMounted,ref,watch} from 'vue'
 const logueado = ref(false)
 const router = useRouter()
 const token = ref()
+const admin = ref(false)
 onMounted(()=>{
   ObtenerToken()
+  isAdmin()
 
 })
 
@@ -17,6 +21,12 @@ watch(token, ()=>{
   ObtenerToken()
   
 })
+const isAdmin = ()=>{
+  if(localStorage.getItem('admin')){
+    admin.value = true
+  }
+  return 
+}
 watch(logueado, ()=>{
   if(token.value){  
     setTimeout(()=>{
@@ -52,6 +62,12 @@ const ObtenerToken = () => {
       <h1 class="text-4xl text-center font-bold  text-white">
         VOTACIONES
       </h1>
+    </div>
+    <RouterLink 
+    style=" float: left; margin-top: -6rem; background-color: #1c8344; width: 300px; height: 50px; text-align: center; padding: 14px; font-size: 1.5em;"
+    to="admin"
+    >Admin-Panel</RouterLink>
+    <div class="admin">
     </div>
     <nav v-if="logueado" class="float-right -mt-20  ">
       <div 
