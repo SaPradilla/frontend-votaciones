@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: 'http://localhost:5650/api'
+    baseURL: 'https://backend-votaciones.onrender.com/api'
 })
 
 export default api
