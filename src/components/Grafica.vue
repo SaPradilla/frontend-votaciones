@@ -15,29 +15,11 @@ const props = defineProps({
 
 })
 
-const labels = [
-    'Santiago Pradila',
-    'Matteo Agudelo',
-    'Yeison ',
-    'Yurany',
-    'Raigoza',
-    'Andry',
-    'Blanco'
-]
 const data = {
     labels: props.candidatos,
     datasets: [{
         label: 'Ola',
-        backgroundColor: [
-            'rgb(255, 99, 132,0.5)',
-            'rgb(75, 192, 192,0.5)',
-            'rgb(255, 205, 86,0.5)',
-            'rgb(201, 203, 207,0.5)',
-            'rgb(54, 162, 235,0.5)',
-            'rgb(255, 61, 105,0.5)',
-            'rgb(255, 61, 105,0.5)',
-     
-        ],
+        
         data: props.cantidadVotos
     }]
 }
