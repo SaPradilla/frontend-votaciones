@@ -78,15 +78,9 @@ const ObtenerToken = () => {
         <p class=" cursor-pointer uppercase text-2xl font-semibold hidden md:block min-[700px]:mr-10 text-white">Cerrar Sesión</p>
       </div>
     </nav>
-   
-
-
-
-    
-
+  
   </header>
   <main class="max-w-6xl mx-auto mt-10">
     <RouterView />
   </main>
 </template>
-

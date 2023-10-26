@@ -94,21 +94,21 @@ const handleIconClick = (node, e) => {
                         }"
                     />
                     <FormKit
-                    placeholder="Ingrese su contraseña"
-                        name="contrasena"
-                        type="password"
-                        label="Contraseña"
-                        value="mySecretPassword!"
-                        prefix-icon="password"
-                        suffix-icon="eyeClosed"
-                        @suffix-icon-click="handleIconClick"
-                        v-model="persona.contrasena" 
-                        validation="required|?length:8"
-                        :validation-messages="{
+                            placeholder="Ingrese su contraseña"
+                            name="contrasena"
+                            type="password"
+                            label="Contraseña"
+                            value="mySecretPassword!"
+                            prefix-icon="password"
+                            suffix-icon="eyeClosed"
+                            @suffix-icon-click="handleIconClick"
+                            v-model="persona.contrasena" 
+                            validation="required|?length:8"
+                            :validation-messages="{
                                 required: 'Contraseña es obligatorio',
-                                length: 'La contraseña debe tener al menos 10 caracteres',
-                                
-                        }"
+                                length: 'La contraseña debe tener al menos 8 caracteres',
+                                    
+                            }"
                     />
                     <FormKit
                         style="background-color:#22c55e ; width: 218px; height: 50px; text-align:center;  padding: 15px; text-align: center; "

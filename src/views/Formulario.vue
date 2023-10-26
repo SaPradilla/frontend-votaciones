@@ -31,13 +31,6 @@
     })
 
     const registrarVotante = (data) => {
-        // if(data.contrasena !== data.confirm_contrasena){
-        //     setTimeout(()=>{
-        //         Error.value = 'La contraseña no coincide'
-        //     },1500)
-        //     Error.value = ''
-        //     return 
-        // }
         cargando.value = true
         ServiceApi.agregarVotante(data) 
             .then(respuesta => {
@@ -106,6 +99,8 @@ const handleIconClick = (node, e) => {
                         ]"
                         help="Elige una opción para poder continuar"
                         validation="required"
+                        :validation-messages="{ required: 'El tipo de documento es Obligatorio' }"
+
                         v-model="persona.tipo_documento"
 
                     />
@@ -127,7 +122,8 @@ const handleIconClick = (node, e) => {
                         type="text"
                         label="Número Celular"
                         name="numero_celular"
-                        placeholder="Teléfono: XXX-XXX-XXXX"
+                        placeholder="Teléfono: 310-000-0000"
+                        prefix-icon="telephone"
                         v-model="persona.numero_celular"
                         validation="number|required|?length:10"
                         :validation-messages="{
@@ -142,6 +138,7 @@ const handleIconClick = (node, e) => {
                         type="text"
                         label="Correo"
                         name="correo"
+                        prefix-icon="email"
                         placeholder="Email de Cliente"
                         validation="required|email"
                         :validation-messages="{ required: 'El Email es Obligatorio', email: 'Coloca un email válido' }"
@@ -161,8 +158,8 @@ const handleIconClick = (node, e) => {
                         v-model="persona.contrasena" 
                         validation="required|?length:8"
                         :validation-messages="{
-                                required: 'Contraseña es obligatorio',
-                                length: 'La contraseña debe tener al menos 10 caracteres',
+                                required: 'La contraseña es obligatoria',
+                                length: 'La contraseña debe tener al menos 8 caracteres',
                                 
                         }"
                     />
