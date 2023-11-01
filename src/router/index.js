@@ -1,7 +1,8 @@
+// Importaciones
 import { createRouter, createWebHistory } from 'vue-router'
 import Inicio from '../components/Inicio.vue'
 import CantidatosAlcaldes from '../views/FormularioCantidato.vue'
-
+// Enrutador
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [

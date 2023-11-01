@@ -1,11 +1,11 @@
 <script setup>
+    // Importaciones
     import {reactive,ref} from 'vue'
     import RouterLink from '../components/UI/RouterLink.vue';
     import ServiceApi from '../services/candidatoService'
     import Spinner from '../components/Spinner.vue'
-
+    // States
     const cargando = ref(false)
-
     const persona = reactive({
         nombre:'',
         apellido:'',
@@ -13,22 +13,19 @@
         cargo_postulante:'',
         foto:null
     })
-    // const foto = ref({})
-    // console.log(foto.value[0].name)
-    
+    // Metodo para registrar un candidato
     const handleSubmit = (data) => {
+        // Ingresa la foto al objecto
         data.foto = data.foto[0].file
+        // Activa el state de cargando
         cargando.value = true
-        console.log(data.foto)
+        // Ejecutra la consulta
         ServiceApi.agregarCandidato(data)
-            .then(respuesta => {
-                console.log(respuesta)
-                // Redireccionar
-                // router.push({ name: 'votacion-'})
-            })
+            .then(respuesta => {})
             .catch(error => console.log(error))
-        
+        // Se ejecuta en 1500ms
         setTimeout(()=>{
+            // Vacia el state de persona para que pueda ser llenado nuevamente
             Object.assign(persona,{
                 nombre:'',
                 apellido:'',
@@ -36,14 +33,15 @@
                 cargo_postulante:'',
                 foto:null
             })
+            // Desactiva el state de cargando
             cargando.value = false
         },1500)
     }
-
 </script>
+
 <template>
     <div>
-
+        <!-- Boton de incio -->
         <div class="flex p-6 justify-end">
             <RouterLink 
             style="background-color: #22c55e;"
@@ -52,12 +50,15 @@
                 Cancelar
             </RouterLink>
         </div>
+        <!-- Si el state de cargando esta activado muesta el componente  -->
         <div v-if="cargando" class="text-center">
             <Spinner/>
             <h2 class=" font-semibold text-3xl">Registrando candidato..</h2>
         </div>
+        <!-- Sino muestra todo lo demas -->
         <div v-else class="mx-auto  bg-white shadow">
             <h1 class="text-4xl pt-4 text-green-500 text-center font-bold uppercase"> Registro de Candidato</h1>
+            <!-- Formulario de registro -->
             <div class="mx-auto md:w-1/2 py-14">
                 <FormKit
                     id="formCantidato"

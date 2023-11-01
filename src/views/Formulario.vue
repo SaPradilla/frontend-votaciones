@@ -1,19 +1,16 @@
 <script setup>
+    // Importanciones
     import { FormKit } from '@formkit/vue'
     import {reactive,ref,onMounted} from 'vue'
     import { useRouter,useRoute } from 'vue-router'
     import ServiceApi from '../services/VotanteService.js'
     import Spinner from '../components/Spinner.vue';
-    import Alerta from '../components/Alerta.vue';
-    const Error = ref('')
-
+    // Acciones de actualizar states
     const emit = defineEmits(['update:existe','update:tieneCuenta'])
+    // States 
     const route = useRoute()
-
     const seleccion = ref('')
-
     const cargando = ref(false)
-
     const persona = reactive({
         nombre:'',
         apellido:'',
@@ -23,42 +20,49 @@
         correo:'',
         contrasena:''
     })
-
+    // Metodos de ciclo de vida
     onMounted(() => {
         seleccion.value = route.params.seleccion
-        console.log(seleccion.value)
-
     })
-
+    // Metodo para crear el voto
     const registrarVotante = (data) => {
+        // Activa el state 
         cargando.value = true
         ServiceApi.agregarVotante(data) 
             .then(respuesta => {
                 console.log('registro exitoso')
             })
             .catch(error => console.log(error))
+        // Se ejecuta en 2000ms
         setTimeout(()=>{
+            // Desactiva el state de cargando
             cargando.value = false
+            // Actualize el state del componente padre
             emit('update:tieneCuenta',true)
         },2000)
     }
-const loguear = ()=>{
-    emit('update:tieneCuenta',true)
-}
-const handleIconClick = (node, e) => {
-  node.props.suffixIcon = node.props.suffixIcon === 'eye' ? 'eyeClosed' : 'eye'
-  node.props.type = node.props.type === 'password' ? 'text' : 'password'
-}
+    // Metodo para loguear
+    const loguear = ()=>{
+        emit('update:tieneCuenta',true)
+    }
+    // Metodo para ver la contrasena con el ojito ese
+    const handleIconClick = (node, e) => {
+        node.props.suffixIcon = node.props.suffixIcon === 'eye' ? 'eyeClosed' : 'eye'
+        node.props.type = node.props.type === 'password' ? 'text' : 'password'
+    }
 </script>
 
 <template>
     <div>
+        <!-- Componente de cargar -->
         <div v-if="cargando" class="text-center">
             <Spinner/>
             <h2 class=" font-semibold text-3xl">Registrando..</h2>
         </div>
+        <!-- Si no esta cargando mostrara lo demás -->
         <div v-else class="mx-auto mt-10 bg-white shadow">
             <h1 class="text-4xl py-6 text-green-500 text-center font-bold uppercase"> Registro </h1>
+            <!-- Formulario -->
             <div class="mx-auto md:w-2/3 py-20 px-6">
                 <FormKit
                     type="form"
@@ -179,9 +183,8 @@ const handleIconClick = (node, e) => {
 </template>
 
 <style >
-
+    /* Estilo del formulario */
     #formulario .formkit-wrapper {
         max-width: 100%;
     }
-
 </style>

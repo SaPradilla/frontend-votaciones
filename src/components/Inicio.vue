@@ -1,4 +1,5 @@
 <script setup>
+    // Importaciones
     import {ref} from 'vue'
     import { useRouter } from 'vue-router'
     const router = useRouter()
@@ -15,7 +16,6 @@
     const redirigir = ( ) =>{
         router.push({ name: 'Votar',  params: { seleccion: seleccion.value  } })
     }
-    import ImagenBackgraound from '../assets/img/votacionbg.jpg'
 
 </script>
 

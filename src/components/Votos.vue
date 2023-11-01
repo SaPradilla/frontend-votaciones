@@ -1,55 +1,66 @@
-<script setup>
-import { reactive, ref, onMounted, watch } from 'vue'
-import { useRoute } from 'vue-router'
-import ApiServiceVotar from '../services/votosService'
-import ApiServiceCandidatos from '../services/candidatoService'
+    <script setup>
+    // Importaciones
+    import { reactive, ref, onMounted, watch } from 'vue'
+    import { useRoute } from 'vue-router'
+    import ApiServiceVotar from '../services/votosService'
+    import ApiServiceCandidatos from '../services/candidatoService'
+    import Grafica from './Grafica.vue';
+    import RouterLink from '../components/UI/RouterLink.vue';
+    // Instancia
+    const route = useRoute()
 
-import Grafica from './Grafica.vue';
-const route = useRoute()
-import RouterLink from '../components/UI/RouterLink.vue';
+    // States
+    const seleccion = ref('')
+    const votos = ref([])
+    const cantidadVotos = ref([])
+    const candidatos = ref([])
+    const candidatoDB = ref([])
 
-// States
-const seleccion = ref('')
-const votos = ref([])
-const cantidadVotos = ref([])
-const candidatos = ref([])
-const candidatoDB = ref([])
+    // Metodo ciclo de vida
+    onMounted(() => {
+        // Obtiene seleccion de los parametros
+        seleccion.value = route.params.seleccion
+        // Obtiene los votos de los candidatos
+        ApiServiceVotar.obtenerVotos(seleccion.value)
+            .then(respuesta => {
+                // La respuesta la almacena en el state
+                votos.value = respuesta.data.Votos
+                obtenerCantidadVotos()
 
+            })
+            .catch(error => console.log(error))
 
-onMounted(() => {
-    seleccion.value = route.params.seleccion
-    ApiServiceVotar.obtenerVotos(seleccion.value)
-        .then(respuesta => {
-            votos.value = respuesta.data.Votos
-            obtenerCantidadVotos()
+        // Obtiene los candidatos
+        ApiServiceCandidatos.obtenerCandidatos(route.params.seleccion)
+            .then(respuesta => {
+                // La respuesta la almacena en el state
+                candidatoDB.value = respuesta.data.Candidatos
+            })
+            .catch(error => console.log('Hubo un error'))
 
-        })
-        .catch(error => console.log(error))
-    ApiServiceCandidatos.obtenerCandidatos(route.params.seleccion)
-        .then(respuesta => {
-            candidatoDB.value = respuesta.data.Candidatos
-        })
-        .catch(error => console.log('Hubo un error'))
-
-})
-// Logica by ChatGpt
-const obtenerCantidadVotos = () => {
-    const conteoVotos = {};
-    votos.value.forEach(voto => {
-        const nombre = voto.candidato && voto.candidato.nombre ? voto.candidato.nombre : 'Blanco';
-        if (nombre in conteoVotos) {
-            conteoVotos[nombre]++;
-        } else {
-            conteoVotos[nombre] = 1;
-        }
     })
-    // Obtener los nombres de candidatos sin repetir
-    candidatos.value = Object.keys(conteoVotos);
+    // Logica by ChatGpt
+    const obtenerCantidadVotos = () => {
+        const conteoVotos = {};
+        // Intera el state de votos
+        votos.value.forEach(voto => {
+            // Si el voto tiene un candidato.nombre quiere que es un voto pot un candidato y se asigna la varible nombre
+            // Sino se llamara blanco
+            const nombre = voto.candidato && voto.candidato.nombre ? voto.candidato.nombre : 'Blanco';
+            // Cuenta cada vez que existe un candidato 
+            if (nombre in conteoVotos) {
+                conteoVotos[nombre]++;
+            // si es la primera vez asigna 1 al voto
+            } else {
+                conteoVotos[nombre] = 1;
+            }
+        })
+        // Obtener los nombres de candidatos sin repetir
+        candidatos.value = Object.keys(conteoVotos);
 
-    // Obtener la cantidad de votos en el mismo orden que los nombres
-    cantidadVotos.value = candidatos.value.map(nombre => conteoVotos[nombre]);
-
-}
+        // Obtener la cantidad de votos en el mismo orden que los nombres
+        cantidadVotos.value = candidatos.value.map(nombre => conteoVotos[nombre]);
+    }
 
 
 </script>
@@ -64,6 +75,7 @@ const obtenerCantidadVotos = () => {
     <div class="contenedor mt-10 ">
 
         <h1 class="text-center  text-3xl text-green-500 uppercase  font-semibold">Candidatos</h1>
+        <!-- Candidatos -->
         <div class="mt-10 grid grid-cols-6 gap-6 ">
                 <div v-for="candidato in candidatoDB"
                     class=" rounded-lg  bg-[#f7f7f7] h-auto  w-36 min-h-0   shadow-lg cursor-pointer max-[600px]:w-24">
@@ -79,8 +91,9 @@ const obtenerCantidadVotos = () => {
                     <h1 class="text-2xl mt-9 font-bold uppercase text-center">BLANCO</h1>
                 </div>
             </div>
+        <!-- Grafica de votos -->
         <div class=" flex justify-center space-x-4">
-           
+            <!-- Se le pasan los states -->
             <Grafica :cantidadVotos="cantidadVotos" :candidatos="candidatos" />
     
         </div>

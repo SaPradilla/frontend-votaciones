@@ -1,25 +1,30 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import RouterLink from '../components/UI/RouterLink.vue';
+    // Importaciones
+    import { ref, onMounted } from 'vue'
+    import { useRouter, useRoute } from 'vue-router'
+    import RouterLink from '../components/UI/RouterLink.vue';
+    // Instancias
+    const router = useRouter()
+    const route = useRoute()
+    // Props recibidos del compontes padre
+    defineProps({
+        titulo: {
+            type: String,
 
-const router = useRouter()
-const route = useRoute()
-defineProps({
-    titulo: {
-        type: String,
-
+        }
+    })
+    // State
+    const seleccion = ref('')
+    // Metodo ciclo de vida
+    onMounted(() => {
+        // Obtiene de los parametros la seleccion y lo almacena al state
+        seleccion.value = route.params.seleccion
+    })
+    // Metodos
+    const redirigirVotos = () => {
+        router.push({ name: 'Votos', params: { seleccion: seleccion.value } })
     }
-})
-onMounted(() => {
-    seleccion.value = route.params.seleccion
-})
-const seleccion = ref('')
-
-const redirigirVotos = () => {
-    router.push({ name: 'Votos', params: { seleccion: seleccion.value } })
-}
-import ImagenBackgraound from '../assets/img/votacionbg.jpg'
+    import ImagenBackgraound from '../assets/img/votacionbg.jpg'
 
 </script>
 
