@@ -171,6 +171,7 @@
                         style="background-color:#22c55e ; width: 218px; height: 50px; text-align:center;  padding: 15px; text-align: center;"
                         type="submit"
                         label="Registrarse"
+                        :errors="['Ingrese sus datos para continuar']" />
                     />
                 </FormKit>
                 <button  class=" justify-center" @click="loguear">

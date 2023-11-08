@@ -80,7 +80,7 @@
                 <div v-for="candidato in candidatoDB"
                     class=" rounded-lg  bg-[#f7f7f7] h-auto  w-36 min-h-0   shadow-lg cursor-pointer max-[600px]:w-24">
                     <img class=" m-auto shadow-sm  rounded-full w-20 h-20"
-                        :src="`http://localhost:5650/candidatos/${candidato.foto}`" alt="nose" srcset="">
+                        :src="candidato.foto" alt="nose" srcset="">
     
                     <h3 class="text-center text-neutral-800  text-lg  font-semibold">{{ candidato.nombre }} {{
                         candidato.apellido }}</h3>
