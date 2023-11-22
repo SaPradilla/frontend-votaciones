@@ -5,9 +5,13 @@
     import { useRouter,useRoute } from 'vue-router'
     import ServiceApi from '../services/VotanteService.js'
     import Spinner from '../components/Spinner.vue';
+    import Alerta from '../components/Alerta.vue';
+    import Completado from '../components/Completado.vue'
+
+
     // Acciones de actualizar states
     const emit = defineEmits(['update:existe','update:tieneCuenta'])
-    // States 
+    // States
     const route = useRoute()
     const seleccion = ref('')
     const cargando = ref(false)
@@ -20,19 +24,28 @@
         correo:'',
         contrasena:''
     })
+    const errorMensaje = ref('')
     // Metodos de ciclo de vida
     onMounted(() => {
         seleccion.value = route.params.seleccion
     })
     // Metodo para crear el voto
     const registrarVotante = (data) => {
-        // Activa el state 
+        // Activa el state
         cargando.value = true
-        ServiceApi.agregarVotante(data) 
+        ServiceApi.agregarVotante(data)
             .then(respuesta => {
                 console.log('registro exitoso')
             })
-            .catch(error => console.log(error))
+            .catch(error => {
+                console.log(error.response.data)
+
+                if(error.response.data.msg){
+                    Error.value = error.response.data.msg
+                    return
+                }
+                    
+            })
         // Se ejecuta en 2000ms
         setTimeout(()=>{
             // Desactiva el state de cargando
@@ -54,6 +67,9 @@
 
 <template>
     <div>
+        <div v-if="errorMensaje">
+            <Alerta>{{ errorMensaje }}</Alerta>
+        </div>
         <!-- Componente de cargar -->
         <div v-if="cargando" class="text-center">
             <Spinner/>
@@ -63,15 +79,17 @@
         <div v-else class="mx-auto mt-10 bg-white shadow">
             <h1 class="text-4xl py-6 text-green-500 text-center font-bold uppercase"> Registro </h1>
             <!-- Formulario -->
-            <div class="mx-auto md:w-2/3 py-20 px-6">
+            <div class="mx-auto py-20 px-6">
                 <FormKit
                     type="form"
                     id="formulario"
                     :actions="false"
                     @submit="registrarVotante"
                     :value="persona"
+                    incomplete-message="Ingrese los datos para continuar"
+
                 >
-                    <FormKit 
+                    <FormKit
                         type="text"
                         label="Nombre"
                         name="nombre"
@@ -81,7 +99,7 @@
                         v-model="persona.nombre"
                     />
 
-                    <FormKit 
+                    <FormKit
                         type="text"
                         label="Apellido"
                         name="apellido"
@@ -99,7 +117,9 @@
                         :options="[
                             'CC',
                             'TI',
-                            
+                            'CE',
+                            'PPT',
+                            'PP',
                         ]"
                         help="Elige una opción para poder continuar"
                         validation="required"
@@ -108,13 +128,13 @@
                         v-model="persona.tipo_documento"
 
                     />
-                    <FormKit 
+                    <FormKit
                         type="text"
                         label="Documento"
                         name="documento"
                         placeholder="Número de documento"
                         v-model="persona.documento"
-                        validation="number|required|?length:10"
+                        validation="number|required|length:10"
                         :validation-messages="{
                             length: 'Documento invalido',
                             required: 'Documento es obligatorio',
@@ -122,14 +142,14 @@
                         }"
 
                     />
-                    <FormKit 
+                    <FormKit
                         type="text"
                         label="Número Celular"
                         name="numero_celular"
                         placeholder="Teléfono: 310-000-0000"
                         prefix-icon="telephone"
                         v-model="persona.numero_celular"
-                        validation="number|required|?length:10"
+                        validation="number|required|length:9"
                         :validation-messages="{
                             length: 'Ingrese un número de celular válido',
                             required: 'Documento es obligatorio',
@@ -138,7 +158,7 @@
 
                     />
 
-                    <FormKit 
+                    <FormKit
                         type="text"
                         label="Correo"
                         name="correo"
@@ -147,9 +167,8 @@
                         validation="required|email"
                         :validation-messages="{ required: 'El Email es Obligatorio', email: 'Coloca un email válido' }"
                         v-model="persona.correo"
-                   
                     />
-      
+
                     <FormKit
                     placeholder="Ingrese su contraseña"
                         name="contrasena"
@@ -159,25 +178,29 @@
                         prefix-icon="password"
                         suffix-icon="eyeClosed"
                         @suffix-icon-click="handleIconClick"
-                        v-model="persona.contrasena" 
-                        validation="required|?length:8"
+                        v-model="persona.contrasena"
+                        validation="required|length:8"
                         :validation-messages="{
                                 required: 'La contraseña es obligatoria',
                                 length: 'La contraseña debe tener al menos 8 caracteres',
-                                
+
                         }"
                     />
                     <FormKit
                         style="background-color:#22c55e ; width: 218px; height: 50px; text-align:center;  padding: 15px; text-align: center;"
                         type="submit"
                         label="Registrarse"
-                        :errors="['Ingrese sus datos para continuar']"  
+                        validation="required"
+                        :validation-messages="{
+                            required: 'Valide todos sus datos',
+                        }"
+                        :errors="['Ingrese sus datos para continuar']"
                     />
                 </FormKit>
                 <button  class=" justify-center" @click="loguear">
                     <p class=" cursor-pointer font-semibold text-lg text-gray-600 ">Ya tienes una cuenta? <span class="text-gray-800">Iniciar Sesion</span></p>
                 </button>
-                
+
             </div>
         </div>
     </div>

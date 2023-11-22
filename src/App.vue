@@ -69,8 +69,11 @@ const ObtenerToken = () => {
     <!-- Si el usuario esta logueado -->
     <nav v-if="logueado" class="float-right -mt-20  ">
       <div @click="logout">
-        <img class=" cursor-pointer w-16 min-[700px]:hidden max-[700px]:-mt-3 max-[700px]:-mr-22"
-          src="./assets/img/salirIcono.png" alt="" srcset="">
+        <img 
+          class=" cursor-pointer w-16 min-[700px]:hidden max-[700px]:-mt-3 max-[700px]:-mr-22"
+          src="./assets/img/salirIcono.png"
+          alt=""
+          srcset="">
         <p class=" cursor-pointer uppercase text-2xl font-semibold hidden md:block min-[700px]:mr-10 text-white">Cerrar
           Sesión</p>
       </div>
