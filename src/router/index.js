@@ -2,6 +2,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Inicio from '../components/Inicio.vue'
 import CantidatosAlcaldes from '../views/FormularioCantidato.vue'
+import ListaCandidatos from '../components/ListaCandidatos.vue'
 // Enrutador
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -57,7 +58,7 @@ const router = createRouter({
     },{
       path: '/candidatos',
       name: 'candidatos',
-      component: () => import('../components/ListaCandidatos.vue'),
+      component: ListaCandidatos,
       // Ruta protegida
       meta: { requireAuth: true },
     }
