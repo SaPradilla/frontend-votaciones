@@ -203,6 +203,9 @@
                         name="terms"
                         :value="true"
                         validation="accepted"
+                        :validation-messages="{
+                            accepted: 'Acepte los terminos para registrarse',
+                        }"
                         validation-visibility="dirty"
                     />
                 </FormKit>
