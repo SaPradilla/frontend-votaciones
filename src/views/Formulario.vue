@@ -163,7 +163,7 @@
                         label="Correo"
                         name="correo"
                         prefix-icon="email"
-                        placeholder="Email de Cliente"
+                        placeholder="Email"
                         validation="required|email"
                         :validation-messages="{ required: 'El Email es Obligatorio', email: 'Coloca un email válido' }"
                         v-model="persona.correo"
@@ -195,6 +195,15 @@
                             required: 'Valide todos sus datos',
                         }"
                         :errors="['Ingrese sus datos para continuar']"
+                    />
+                    <FormKit
+                        type="checkbox"
+                        label="Terminos y Condiciones"
+                        help="Aceptas los terminos y condiciones?"
+                        name="terms"
+                        :value="true"
+                        validation="accepted"
+                        validation-visibility="dirty"
                     />
                 </FormKit>
                 <button  class=" justify-center" @click="loguear">
