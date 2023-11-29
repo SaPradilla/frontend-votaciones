@@ -125,7 +125,7 @@ const SeleccionarBlanco = () => {
 }
 const Votar = () => {
     modalOpen()
-    console.log(candidatoSeleccionado)
+    console.log('se ejecuto')
     cargando.value = true
     ApiServiceVotar.Votar(seleccion.value, candidatoSeleccionado.value.id, identificadorPersona.value)
         .then(respuesta => {
@@ -148,8 +148,7 @@ const Votar = () => {
 const votarBlanco = () => {
     modalOpen()
     cargando.value = true
-    console.log(seleccion.value)
-    console.log(identificadorPersona.value)
+    console.log('Se ejecuto blanco')
     ApiServiceVotar.VotarBlanco(seleccion.value, identificadorPersona.value)
         .then(respuesta => {
             if (respuesta.data.yaVoto) {
@@ -197,12 +196,12 @@ const modalOpen = ()=>{
             <!-- Modal  para votar-->
             <div>
                 <!-- Contenedor que muesta el contenido dependiendo del state modal -->
-                <TransitionRoot appear :show="modal" as="template">
+                <TransitionRoot appear :show="modal" >
                     <!-- Contenedor del modal y se cierra dependiendo del state-->
                     <Dialog as="div" @close="modalOpen" class="relative z-10">
                     <!-- Animacion de inicio del modal -->
                     <TransitionChild
-                        as="template"
+                        
                         enter="duration-300 ease-out"
                         enter-from="opacity-0"
                         enter-to="opacity-100"
@@ -219,7 +218,7 @@ const modalOpen = ()=>{
                         class="flex min-h-full items-center justify-center p-4 text-center"
                         >
                         <TransitionChild
-                            as="template"
+                           
                             enter="duration-300 ease-out"
                             enter-from="opacity-0 scale-95"
                             enter-to="opacity-100 scale-100"
@@ -254,7 +253,7 @@ const modalOpen = ()=>{
                                     <button
                                     type="button"
                                     class=" w-max inline-flex justify-center rounded-md border border-transparent bg-green-500 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                                    @click=" candidatoSeleccionado.nombre ? Votar() : votarBlanco()  "
+                                    @click=" seleccionado ? Votar() : votarBlanco()  "
                                     >
                                     Votar {{ candidatoSeleccionado.nombre  ? 'por ' +candidatoSeleccionado.nombre : 'en Blanco ' }}
                                     </button>

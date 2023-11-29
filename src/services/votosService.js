@@ -4,7 +4,7 @@ export default {
     Votar(seleccion,candidatoId,votanteId) {
         return api.post(`votos/registrar/${seleccion}/${candidatoId}/${votanteId}`)
     },
-    VotarBlanco(seleccion,votanteId){
+        (seleccion,votanteId){
         return api.post(`votos/registrar-blanco/${seleccion}/${votanteId}`)
     },
     obtenerVotos(seleccion){
