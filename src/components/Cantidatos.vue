@@ -254,7 +254,7 @@ const modalOpen = ()=>{
                                     <button
                                     type="button"
                                     class=" w-max inline-flex justify-center rounded-md border border-transparent bg-green-500 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                                    @click="seleccionadoBlanco ? votarBlanco():  Votar()"
+                                    @click="seleccionadoBlanco === false ? votarBlanco() :  Votar()"
                                     >
                                     Votar {{ candidatoSeleccionado.nombre  ? 'por ' +candidatoSeleccionado.nombre : 'en Blanco ' }}
                                     </button>
