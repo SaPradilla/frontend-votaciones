@@ -10,6 +10,9 @@ export default {
     },
     obtenerCandidatos(cargo){
         return api.get(`/candidato/listar/${cargo}`)
+    },
+    obtenerTodosCandidatos(){
+        return api.get('/candidato/listar')
     }
 
 }

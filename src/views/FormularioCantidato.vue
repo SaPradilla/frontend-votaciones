@@ -4,6 +4,7 @@
     import RouterLink from '../components/UI/RouterLink.vue';
     import ServiceApi from '../services/candidatoService'
     import Spinner from '../components/Spinner.vue'
+    import Alerta from '../components/Alerta.vue';
     // States
     const cargando = ref(false)
     const persona = reactive({
@@ -13,6 +14,7 @@
         cargo_postulante:'',
         foto:null
     })
+    const errorMensaje = ref('')
     // Metodo para registrar un candidato
     const handleSubmit = (data) => {
         // Ingresa la foto al objecto
@@ -21,26 +23,44 @@
         cargando.value = true
         // Ejecutra la consulta
         ServiceApi.agregarCandidato(data)
-            .then(respuesta => {})
-            .catch(error => console.log(error))
-        // Se ejecuta en 1500ms
-        setTimeout(()=>{
-            // Vacia el state de persona para que pueda ser llenado nuevamente
-            Object.assign(persona,{
-                nombre:'',
-                apellido:'',
-                biografia:'',
-                cargo_postulante:'',
-                foto:null
+            .then(respuesta => {
+
+                // Se ejecuta en 1500ms
+                setTimeout(()=>{
+                    // Vacia el state de persona para que pueda ser llenado nuevamente
+                    Object.assign(persona,{
+                        nombre:'',
+                        apellido:'',
+                        biografia:'',
+                        cargo_postulante:'',
+                        foto:null
+                    })
+                    // Desactiva el state de cargando
+                    cargando.value = false
+                },1500)
+                
             })
-            // Desactiva el state de cargando
-            cargando.value = false
-        },1500)
+            .catch(error => {
+                console.log(error)
+                errorMensaje.value = error.response.data.msg
+                 // Se ejecuta en 1500ms
+                 setTimeout(()=>{
+                    // Vacia el state de persona para que pueda ser llenado nuevamente
+                errorMensaje.value = ''
+
+                },1500)
+                cargando.value = false
+
+            })
+       
     }
 </script>
 
 <template>
     <div>
+        <div v-if="errorMensaje">
+            <Alerta>{{ errorMensaje }}</Alerta>
+        </div>
         <!-- Boton de incio -->
         <div class="flex p-6 justify-end">
             <RouterLink 

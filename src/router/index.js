@@ -54,6 +54,12 @@ const router = createRouter({
       component: () => import('../views/DashboardAdmin.vue'),
       // Ruta protegida
       meta: { requireAuth: true },
+    },{
+      path: '/candidatos',
+      name: 'candidatos',
+      component: () => import('../components/ListaCandidatos.vue'),
+      // Ruta protegida
+      meta: { requireAuth: true },
     }
   ]
 })

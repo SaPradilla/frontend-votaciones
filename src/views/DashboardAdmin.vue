@@ -34,9 +34,10 @@
 
         <div class="flex  justify-between">
 
+          
             <RouterLink
                 style="  background-color: #22c55e; width: 300px; height: 70px; text-align: center; padding: 13px; font-size: 1.5em;"
-                to="formCandidato">Registrar Candidato
+                to="candidatos">Candidatos
             </RouterLink>
             <div class="votos ">
             <div class="contenedor  ">
