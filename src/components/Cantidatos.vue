@@ -12,11 +12,16 @@ import ApiServiceVotantes from '../services/VotanteService'
 import Login from '../views/Login.vue'
 import Formulario from '../views/Formulario.vue'
 import Completado from './Completado.vue'
-// Instancias de vue-router
+
+// stores
+import { useAuth } from '../stores/auth'
+
+// Instancias 
+const auth = useAuth()
 const route = useRoute()
 const router = useRouter()
 // State
-const token = ref('')
+// const token = ref('')
 const candidatos = ref([])
 const seleccion = ref('')
 const seleccionado = ref(false)
@@ -33,7 +38,7 @@ const modal = ref(false)
 // Ciclo de vida, se ejecuta cada que haga un cambio
 onMounted(() => {
     seleccion.value = route.params.seleccion
-    ObtenerToken()
+    auth.ObtenerToken()
     ObtenerIdVotante()
     ObtenerMenor()
     ApiServiceCandidatos.obtenerCandidatos(seleccion.value)
@@ -44,8 +49,8 @@ onMounted(() => {
         .catch(error => console.log('Hubo un error'))
 })
 // Observa los cambios del token cuando se logue
-watch(token, () => {
-    ObtenerToken()
+watch(auth.token, () => {
+    auth.ObtenerToken()
     ObtenerSeleccionesVotadas()
 
 })
@@ -86,15 +91,7 @@ const ObtenerSeleccionesVotadas = () => {
 
     
 }
-// Obtiene le token
-const ObtenerToken = () => {
-    // Obtiene el token de localstorage y si es existe
-    if (localStorage.getItem('token')) {
-        // Guarda el token en setToken y lo asigna a state
-        token.value = localStorage.getItem('token')
-    }
-    return
-}
+
 // Obtiene el id votante
 const ObtenerIdVotante = () => {
     // Obtiene el token de localstorage y si es existe
@@ -281,7 +278,7 @@ const modalOpen = ()=>{
             </div>
 
             <!-- Si token existe es porque esta logueado y muestra este contenedor -->
-            <div v-if="token" class="contenedor">
+            <div v-if="auth.token" class="contenedor">
                 <div class="flex justify-end">
                     <RouterLink style="background-color: #22c55e;" to="inicio">
                         Volver
@@ -367,7 +364,7 @@ const modalOpen = ()=>{
                 <!-- Contenedor de Iniciar sesion y registrar -->
                 <div class="mx-auto mt-10 rounded-md bg-white shadow  md:w-1/2 py-20 px-6">
                     <!-- Login si tiene cuenta  -->
-                    <Login v-if="tieneCuenta" v-model:identificadorPersona="identificadorPersona" v-model:token="token"
+                    <Login v-if="tieneCuenta" v-model:identificadorPersona="identificadorPersona" 
                         v-model:tieneCuenta="tieneCuenta" v-model:isMenorEdad="isMenorEdad" />
                     <!-- Se activa el state de tieneCuenta cuando se registra -->
                     <Formulario v-else v-model:tieneCuenta="tieneCuenta" />

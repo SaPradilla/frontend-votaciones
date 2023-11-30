@@ -7,8 +7,11 @@ import ServiceApi from '../services/VotanteService.js'
 import Spinner from '../components/Spinner.vue';
 import Alerta from '../components/Alerta.vue';
 
+//stores
+import { useAuth } from '../stores/auth';
+const auth = useAuth()
 // Acciones de actualizar states
-const emit = defineEmits(['update:token', 'update:identificadorPersona', 'update:tieneCuenta', 'update:isMenorEdad'])
+const emit = defineEmits([, 'update:identificadorPersona', 'update:tieneCuenta', 'update:isMenorEdad'])
 // states
 const cargando = ref(false)
 const Error = ref('')
@@ -20,13 +23,15 @@ const persona = reactive({
 const inciarSesion = (data) => {
     // Activa el componente de cargar
     cargando.value = true
-    let findtoken
+    // let findtoken
     // Consulta a la Api con un metodo post
     ServiceApi.loguearVotante(data)
         .then(respuesta => {
             // Gaurdar el token en el localstorage
+            
             localStorage.setItem('token', respuesta.data.data.token)
-            findtoken = respuesta.data.data.token
+            // findtoken = respuesta.data.data.token
+            auth.ObtenerToken()
             // Añade el id al localstorage para luego validarlo con las votaciones
             localStorage.setItem('exits-user', respuesta.data.ide)
             // Lo actualiza en el state del componente candidatos
@@ -38,7 +43,9 @@ const inciarSesion = (data) => {
             }
             // Si el usuario es admin, le dara permisos
             if (respuesta.data.permisosAdmin) {
+                
                 localStorage.setItem('admin', true)
+                auth.admin = true
             }
         })
         .catch(error => {
@@ -49,7 +56,7 @@ const inciarSesion = (data) => {
     // tambien para que le de tiempo de guardar el token y asignarlo al state en candidatos
     setTimeout(() => {
         cargando.value = false
-        emit('update:token', findtoken)
+        // emit('update:token', findtoken)
     }, 1500)
     setTimeout(() => {
         Error.value = ''

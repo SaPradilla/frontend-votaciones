@@ -4,13 +4,15 @@ import mitt from 'mitt'
 import config from '../formkit.config'
 import App from './App.vue'
 import router from './router'
-
+import { createPinia } from 'pinia'
 import './assets/main.css'
 
 const app = createApp(App)
 const emitter = mitt()
 
 app.use(router)
+app.use(createPinia())
+
 app.use(plugin, defaultConfig(config))
 // Accede al objeto $router proporcionado 
 app.config.globalProperties.$router = router
