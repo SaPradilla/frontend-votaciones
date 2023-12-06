@@ -2,10 +2,17 @@
     // Importaciones
     import { ref, onMounted } from 'vue'
     import { useRouter, useRoute } from 'vue-router'
+    import Grafica from '../components/Grafica.vue';
     import RouterLink from '../components/UI/RouterLink.vue';
+    import ImagenBackgraound from '../assets/img/votacionbg.jpg'
+    import { useOpcion } from '../stores/opcionAdmin';  
+    import Votos from '../components/Votos.vue';
+    import FormularioCandidato from '../components/FormularioCantidato.vue'
+    import ListaCandidatos from '../components/ListaCandidatos.vue';
     // Instancias
     const router = useRouter()
     const route = useRoute()
+    const Opcion = useOpcion()
     // Props recibidos del compontes padre
     defineProps({
         titulo: {
@@ -13,6 +20,7 @@
 
         }
     })
+    
     // State
     const seleccion = ref('')
     // Metodo ciclo de vida
@@ -24,21 +32,50 @@
     const redirigirVotos = () => {
         router.push({ name: 'Votos', params: { seleccion: seleccion.value } })
     }
-    import ImagenBackgraound from '../assets/img/votacionbg.jpg'
+
 
 </script>
 
 <template>
-    <div>
-        <h1 class="  text-center text-green-500 text-5xl font-bold ">PANEL ADMIN</h1>
+    <div class="contenedor-admin">
 
-        <div class="flex  justify-between">
+        <div 
+            v-if="Opcion.dashboard"
+            class="dashboard"
+        >
+
+        </div>
+
+        <div 
+            v-if="Opcion.candidatos"
+            class="candidatos"
+        >
+            <FormularioCandidato v-if="Opcion.registroCandidato"/>
+            <ListaCandidatos v-if="Opcion.incioCandidato"/>
+        </div>
+
+        <!-- <div 
+            v-if="Opcion.votos"
+            class="votos"
+        >
+            <Votos/>
+        
+
+        </div> -->
+        
+
+
+
+        <!-- <h1 class="  text-center text-green-500 text-5xl font-bold ">PANEL ADMIN</h1> -->
+
+        <!-- <div class="flex  justify-between">
 
           
             <RouterLink
                 style="  background-color: #22c55e; width: 300px; height: 70px; text-align: center; padding: 13px; font-size: 1.5em;"
                 to="candidatos">Candidatos
             </RouterLink>
+
             <div class="votos ">
             <div class="contenedor  ">
                 <div class=" w-80 min-h-0  m-12 p-7 shadow-2xl cursor-pointer max-[600px]:w-80">
@@ -70,8 +107,8 @@
 
         </div>
 
-        </div>
-
+        </div> -->
+        
 
 
 

@@ -5,6 +5,10 @@
     import ServiceApi from '../services/candidatoService'
     import Spinner from '../components/Spinner.vue'
     import Alerta from '../components/Alerta.vue';
+    import { useOpcion } from '../stores/opcionAdmin';
+    
+    const Opcion = useOpcion()
+    
     // States
     const cargando = ref(false)
     const persona = reactive({
@@ -63,12 +67,13 @@
         </div>
         <!-- Boton de incio -->
         <div class="flex p-6 justify-end">
-            <RouterLink 
-            style="background-color: #22c55e;"
-                to="inicio"
-            >
-                Cancelar
-            </RouterLink>
+                    <div  
+                    class=" bg-green-500 h-10 w-36 text-white cursor-pointer text-center rounded-lg flex justify-center  items-center" 
+                    @click="Opcion.handleincioCandidato" 
+                    >
+                        Cancelar
+                    </div>
+  
         </div>
         <!-- Si el state de cargando esta activado muesta el componente  -->
         <div v-if="cargando" class="text-center">
@@ -76,7 +81,7 @@
             <h2 class=" font-semibold text-3xl">Registrando candidato..</h2>
         </div>
         <!-- Sino muestra todo lo demas -->
-        <div v-else class="mx-auto  bg-white shadow">
+        <div v-else class="mx-auto">
             <h1 class="text-4xl pt-4 text-green-500 text-center font-bold uppercase"> Registro de Candidato</h1>
             <!-- Formulario de registro -->
             <div class="mx-auto md:w-1/2 py-14">

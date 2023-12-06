@@ -38,6 +38,7 @@ const modal = ref(false)
 // Ciclo de vida, se ejecuta cada que haga un cambio
 onMounted(() => {
     seleccion.value = route.params.seleccion
+    ObtenerSeleccionesVotadas()
     auth.ObtenerToken()
     ObtenerIdVotante()
     ObtenerMenor()
@@ -48,12 +49,11 @@ onMounted(() => {
         })
         .catch(error => console.log('Hubo un error'))
 })
-// Observa los cambios del token cuando se logue
-watch(auth.token, () => {
-    auth.ObtenerToken()
-    ObtenerSeleccionesVotadas()
-
-})
+// // Observa los cambios del token cuando se logue
+// watch(auth.token, () => {
+//     auth.ObtenerToken()
+//     
+// })
 // Obtiene las selecciones votadas por el usuario 
 const ObtenerSeleccionesVotadas = () => {
     // Obtiene las selecciones votadas de localstorage
@@ -140,7 +140,7 @@ const Votar = () => {
     setTimeout(() => {
         cargando.value = false
         router.push({ name: 'inicio' })
-    }, 1500)
+    }, 2000)
 }
 const votarBlanco = () => {
     modalOpen()
@@ -157,10 +157,10 @@ const votarBlanco = () => {
         }).catch(error => {
             console.log(error)
         })
-    setTimeout(() => {
+        setTimeout(() => {
         cargando.value = false
         router.push({ name: 'inicio' })
-    }, 1500)
+    }, 2000)
     
 }
 const modalOpen = ()=>{
@@ -169,6 +169,7 @@ const modalOpen = ()=>{
 </script>
 
 <template>
+
     <!-- Pantalla de cargar se muestra dependiento del state de cargando -->
     <div v-if="cargando" class="text-center">
         <Completado />
@@ -189,9 +190,9 @@ const modalOpen = ()=>{
             </div>
 
         </div>
-        <div v-else>
+        <div v-else class="">
             <!-- Modal  para votar-->
-            <div>
+            <div class="modal-decision">
                 <!-- Contenedor que muesta el contenido dependiendo del state modal -->
                 <TransitionRoot appear :show="modal" >
                     <!-- Contenedor del modal y se cierra dependiendo del state-->
@@ -278,7 +279,7 @@ const modalOpen = ()=>{
             </div>
 
             <!-- Si token existe es porque esta logueado y muestra este contenedor -->
-            <div v-if="auth.token" class="contenedor">
+            <div v-if="auth.token" class="contenedor ">
                 <div class="flex justify-end">
                     <RouterLink style="background-color: #22c55e;" to="inicio">
                         Volver
@@ -289,67 +290,97 @@ const modalOpen = ()=>{
                 <p class="text-2xl mt-5 text-center">Seleccione un candidato</p>
 
                 <!-- Contenedor de candidatos -->
-                <div class="grid  grid-cols-3 max-[600px]:grid-cols-1   ">
 
-                    <!-- Candidatos -->
-                    <div v-for="candidato in candidatos" @click="Seleccionar(candidato)"  :key="candidato.div"
-                        :class="{ 'seleccionado': candidato.id === candidatoSeleccionado.id && seleccionado }"
-                        class="candidato rounded-lg bg-[#f7f7f7] w-80 min-h-0  m-12 p-7 shadow-2xl cursor-pointer max-[600px]:w-80">
+                <div class="contenedor-candidatos max-[600px]:flex max-[600px]:justify-center max-[600px]:items-center max-[600px]:flex-col">
 
-                    <!-- Se activa la clase dinamica al seleccionar un candidato -->
-                        <div class="seleccionadoBoton -ml-8 absolute ">
-                            <!-- Boton de votar aparece solo cuando se selecciona un candidato -->
-                            <FormKit v-if="seleccionado && candidato.id === candidatoSeleccionado.id"
-                                style="border-radius: 0; box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1); font-size: 1.4em; background-color:#10e45e ; width: 318px; height: 50px;   padding: 10px;"
-                                type="button" @click="modalOpen">
-                                <p>Votar por <span class="font-bold"> {{ candidatoSeleccionado.nombre }}</span></p>
-                            </FormKit>
-                        </div>
+                        <div class="grid grid-cols-3 max-[600px]:grid-cols-1 ">    
+                        <!-- Candidatos -->
+                        <div v-for="candidato in candidatos" @click="Seleccionar(candidato)"  :key="candidato.div"
+                                :class="{ 'seleccionado bg-green-500 ': candidato.id === candidatoSeleccionado.id && seleccionado }"
+                                class="candidato rounded-lg bg-[#f7f7f7] w-80 h-[490px] m-12 p-7 shadow-2xl cursor-pointer">
 
-                        <!-- Info de los candidatos -->
-                        <img :class="{ 'seleccionadoItems': candidato.id === candidatoSeleccionado.id && seleccionado }"
-                            class=" m-auto shadow-sm  rounded-full w-44 h-44"
-                            :src="candidato.foto" :alt=" 'imagen_candidato ' + candidato.nombre" srcset="">
+                                <!-- Se activa la clase dinamica al seleccionar un candidato -->
 
-                        <h3 :class="{ 'seleccionadoItems': candidato.id === candidatoSeleccionado.id && seleccionado }"
-                            class="text-center text-neutral-800  text-3xl  font-semibold">{{ candidato.nombre }} {{
-                                candidato.apellido }}</h3>
+                                <!-- Boton de votar aparece solo cuando se selecciona un candidato -->
+                                <div 
+                                    v-if="seleccionado && candidato.id === candidatoSeleccionado.id" 
+                                    @click="modalOpen" 
+                                    class="seleccionadoBoton  rounded-lg   ">
+                                        <div 
+                                            class="z-10 flex justify-center items-center "
+                                            >
+                                    
+                                            <p 
+                                                class=" text-4xl font-bold text-white text-center"
+                                             
+                                                
+                                                >VOTAR
+                                            </p>
+                                    </div>
+                                </div>
+                               
 
-                        <h3 :class="{ 'seleccionadoItems': candidato.id === candidatoSeleccionado.id && seleccionado }"
-                            class=" mb-6 text-center  text-neutral-600 italic  text-2xl font-semibold">
-                            {{ candidato.cargo_postulante }}</h3>
+                            <!-- Info de los candidatos -->
+                            <div class=" flex flex-col gap-2">
 
-                        <div :class="{ 'seleccionadoItems': candidato.id === candidatoSeleccionado.id && seleccionado }"
-                            class="biografia">
-                            <p class=" text-xl text-neutral-700" >Biografia:</p>
-                            <div class=" mt-2 text-left   ">
-                                <h3 class=" break-words text-neutral-600  text-xl font-semibold">{{ candidato.biografia }} </h3>
+                                <img :class="{ 'seleccionadoItems': candidato.id === candidatoSeleccionado.id && seleccionado }"
+                                    class=" m-auto shadow-sm  rounded-full w-44 h-44 "
+                                    :src="candidato.foto" :alt=" 'imagen_candidato ' + candidato.nombre" srcset="">
+        
+                                <h3 :class="{ 'seleccionadoItems': candidato.id === candidatoSeleccionado.id && seleccionado }"
+                                    class="text-center text-neutral-800  text-3xl  font-semibold">{{ candidato.nombre }} {{
+                                        candidato.apellido }}</h3>
+        
+                                <h3 :class="{ 'seleccionadoItems': candidato.id === candidatoSeleccionado.id && seleccionado }"
+                                    class=" text-center  text-neutral-600 italic  text-2xl font-semibold">
+                                    {{ candidato.cargo_postulante }}</h3>
+        
                             </div>
+                            <div :class="{ 'seleccionadoItems': candidato.id === candidatoSeleccionado.id && seleccionado }"
+                                class="biografia mt-7">
+                                <p class=" text-xl text-neutral-700" >Biografia:</p>
+                                <div class=" text-left   ">
+                                    <h3 class=" break-words text-neutral-600  text-xl font-semibold">{{ candidato.biografia }} </h3>
+                                </div>
+                            </div>
+                            
                         </div>
 
-
+                        </div>
                     </div>
+
                     <!-- Voto en blanco -->
-                    <div class="col-span-1  flex m-auto   items-centerjustify-center  ">
+                    <div class="col-span-1  flex m-auto   items-center justify-center  ">
                         <div @click="SeleccionarBlanco" class="w-80 h-80 p-7 shadow-2xl m-16 text-center cursor-pointer"
                             :class="{ 'seleccionado seleccionadoItems': seleccionadoBlanco }">
 
+                            <div 
+                                v-if="seleccionadoBlanco"
+                                class="seleccionadoBoton-blanco  rounded-lg   ">
+                                    <div 
+
+                                        class="z-10 flex justify-center items-center "
+                                        >
+                                
+                                        <p 
+                                            class=" text-3xl font-bold text-white text-center"
+                                            @click="modalOpen" 
+                                            
+                                            >Votar en <span class="font-bold"> BLANCO </span>
+
+                                        </p>
+                                        
+                                </div>
+                            </div>
+
                             <h1 :class="{ 'seleccionadoItems': seleccionadoBlanco }"
                                 class="text-5xl mt-24  font-bold uppercase text-center">BLANCO</h1>
-                            <div class="seleccionadoBoton -ml-8  ">
-
-                            <!-- Boton de votar aparece solo cuando se selecciona -->
-                                <FormKit v-if="seleccionadoBlanco"
-                                    style=" border-radius: 0px 0px 5px 5px; font-size: 1.4em; background-color:#22c55e ; width: 318px; height: 50px; text-align:center;  padding: 10px;"
-                                    type="button" @click="modalOpen">
-                                    <p>Votar en <span class="font-bold"> BLANCO </span></p>
-                                </FormKit>
-                            </div>
+                            
+       
 
                         </div>
                     </div>
 
-                </div>
 
             </div>
 
@@ -377,20 +408,40 @@ const modalOpen = ()=>{
         </div>
 
     </div>
+    
 </template>
 <style>
+.modal-decision{
+    z-index: 2000;
+}
 /* Clases dinamicas al seleccionar */
 .seleccionado {
-    border: solid #22c55e 3px;
-    background-color: #198f3d8c;
+    /* border: solid #22c55e 3px; */
+    background-color: #12983b9b;
+    /* transition: all 0.2s ease; */
+    /* filter: brightness(10%); */
 }
 .seleccionado .seleccionadoBoton {
     filter: none;
-    z-index: 1000;
-    margin-top: 15%;
+    z-index: 1;
+    transition: all 0.2s ease;
+    position: absolute;
+    margin-top: 20vh;
+    margin-left: 7vh;
 }
+.seleccionado .seleccionadoBoton-blanco {
+    filter: none;
+    z-index: 1;
+    transition: all 0.2s ease;
+    position: absolute;
+    margin-top: 12vh;
+    margin-right: 10px;
+}
+
+
 .seleccionado .seleccionadoItems {
-    filter: blur(1.5px);
+    filter: blur(2.9px) brightness(90%);
+    transition: all 0.2s ease;
 }
 
 </style>

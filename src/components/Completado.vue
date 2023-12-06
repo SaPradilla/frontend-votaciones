@@ -1,6 +1,9 @@
 <template>
-    <div>
-        <div class="wrapper"> <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+    <div class="contenedor-compleado">
+        
+        <h1 class=" text-5xl text-green-500 font-bold">¡Gracias por Votar!</h1>
+        <div class="wrapper"> 
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
                 <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
                 <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
             </svg>
@@ -14,9 +17,13 @@
     padding: 0;
     margin: 0
 }
-
+.contenedor-completado{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .wrapper {
-    height: 60vh;
+    height: 40vh;
     display: flex;
     justify-content: center;
     align-items: center;

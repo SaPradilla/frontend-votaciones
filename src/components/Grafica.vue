@@ -2,6 +2,10 @@
 import Chart from 'chart.js/auto'
 import { onMounted, ref, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router'
+import { useCandidatos } from '../stores/candidatos';
+
+const Candidatos = useCandidatos()
+
 const route = useRoute()
 
 const props = defineProps({
@@ -27,18 +31,15 @@ onMounted(async () => {
         const data = {
             labels: props.candidatos,
             datasets: [{
-                backgroundColor: [
-                    'rgb(255, 99, 132,0.5)',
-                    'rgb(75, 192, 192,0.5)',
-                    'rgb(255, 205, 86,0.5)',
-                    'rgb(201, 203, 207,0.5)',
-                    'rgb(54, 162, 235,0.5)',
-                    // 'rgb(255, 61, 105,0.5)',
-                    // 'rgb(255, 61, 105,0.5)',
-
-
-
-                ],
+                // backgroundColor: [
+                //     'rgb(255, 99, 132,0.5)',
+                //     'rgb(75, 192, 192,0.5)',
+                //     'rgb(255, 205, 86,0.5)',
+                //     'rgb(201, 203, 207,0.5)',
+                //     'rgb(54, 162, 235,0.5)',
+                //     'rgb(255, 61, 105,0.5)',
+                //     'rgb(255, 61, 105,0.5)',
+                // ],
                 data: props.cantidadVotos
             }]
         }

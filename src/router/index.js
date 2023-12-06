@@ -1,7 +1,6 @@
 // Importaciones
 import { createRouter, createWebHistory } from 'vue-router'
 import Inicio from '../components/Inicio.vue'
-import CantidatosAlcaldes from '../views/FormularioCantidato.vue'
 import ListaCandidatos from '../components/ListaCandidatos.vue'
 // Enrutador
 const router = createRouter({
@@ -28,14 +27,7 @@ const router = createRouter({
       component: () => import('../views/Formulario.vue'),
       props: true,
 
-    },{
-
-      path: '/candidato/registrar',
-      name: 'formCandidato',
-      component: CantidatosAlcaldes,
-      // Ruta protegida
-      meta: { requireAuth: true }
-    },
+    }
     ,{
 
       path: '/votos/:seleccion',
