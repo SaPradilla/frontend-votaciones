@@ -20,7 +20,8 @@ export const useOpcion = defineStore('opcionAdmin', () => {
 
     const Seleccion = ref('')
     const modalSelect = ref(false)
-    
+
+    const modal = ref(false)
     
     // Instancia 
     const redirigirVotos = (xd) => {
@@ -38,7 +39,7 @@ export const useOpcion = defineStore('opcionAdmin', () => {
             },800)
         }
     }
-    
+
     // Metodos
 
     const handleModalSelect = ()=>{
@@ -55,6 +56,7 @@ export const useOpcion = defineStore('opcionAdmin', () => {
     const handleCandidatos = ()=>{
         votos.value = false
         dashboard.value = false
+        registroCandidato.value = false
         candidatos.value = true
         incioCandidato.value = true
 
@@ -66,8 +68,9 @@ export const useOpcion = defineStore('opcionAdmin', () => {
     }
     const handleincioCandidato= ()=>{
         votos.value = false
-        incioCandidato.value = true
+        editCandidato.value = false
         registroCandidato.value = false
+        incioCandidato.value = true
 
     }
 
@@ -76,11 +79,12 @@ export const useOpcion = defineStore('opcionAdmin', () => {
         incioCandidato.value = false
         registroCandidato.value = true
     }
-    const handlEditCandidato = ()=>{
+    const handlEditCandidato = (candidato)=>{
+        console.log(candidato)
         incioCandidato.value = false
         registroCandidato.value = false
         editCandidato.value = true
-
+        Candidato.candidatoUpdate = candidato
     }
     return {
         candidatos,
@@ -91,7 +95,7 @@ export const useOpcion = defineStore('opcionAdmin', () => {
         modalSelect,
         votos,
         editCandidato,
-
+        modal,
         
         handleCandidatos,
         handleDashboard,

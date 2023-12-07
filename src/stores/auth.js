@@ -29,8 +29,8 @@ export const useAuth = defineStore('auth', () => {
         admin.value = false
         token.value = null
         logueado.value = false
+        window.location.reload();
         router.push({ name: 'inicio' })
-        logueado.value = false
     }
     const ObtenerToken = () => {
         

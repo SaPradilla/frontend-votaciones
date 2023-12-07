@@ -22,29 +22,33 @@ export const useCandidatos = defineStore('candidatos', () => {
         'Representante SENA',
         'Asamblea'
     ])
-    const candidatoUpdate = ref(
-        {
-            nombre:'',
-            apellido:'',
-            biografia:'',
-            cargo_postulante:'',
-            foto:null
-        }
-    )
-
-    
+    const candidatoUpdate = ref(null)
+    const foto = ref([])
+    const idCandidato = ref(null)
     // Metodos
-    const editCandidato =  (candidato)=>{
-        Opcion.handlEditCandidato()
+    const editCandidato = () =>{
+        
+        cargando.value = true
 
+        if(foto.value.length !== 0){
+            console.log('sdfdjsh')
+            candidatoUpdate.value.foto = foto.value[0].file
+        }else{
+            delete candidatoUpdate.value.foto
+        }
+        candidatoService.editarCandidato(candidatoUpdate.value.id,candidatoUpdate.value)
+            .then(res => {
+                console.log(res)
+                console.log('dfdf')
+            })
+            .catch(err =>{
+                console.log(err)
 
-        candidatoService.editarCandidato(candidato.id,candidato)
-        .then(res =>{
-            console.log(res)
-        })
-        .catch(err =>{
-            console.log(err)
-        })
+            })
+        setTimeout(()=>{
+            cargando.value = false
+            Opcion.handleincioCandidato()
+        },400)
     }
 
     const obtenerTodosCandidatos = async()=>{
@@ -74,12 +78,38 @@ export const useCandidatos = defineStore('candidatos', () => {
                     default:
                         break
                 }
-            cargando.value = false
+           
             
             } catch (error) {
                 console.error(`Error obteniendo candidatos para ${element}:`, error)
+            } finally {
+                setTimeout(()=>{
+                    cargando.value = false
+                },400)
             }
         }
+    }
+
+    const EliminarCandidato = () =>{
+        // console.log(idCandidato.value)
+        candidatoService.borrarCandidato(idCandidato.value)
+        .then(res =>{
+            console.log(res)
+        })
+        .catch(err =>{
+            console.log(err)
+        })
+        vaciarState()
+        obtenerTodosCandidatos()
+        Opcion.modal = false
+    }
+    const vaciarState = ()=>{
+        candidatosVotos.value = []
+        candidatosAlcalde.value = []
+        candidatosGobernador.value = []
+        candidatosJunta.value = []
+        candidatosAsamblea.value = []
+        candidatosRepresentante.value = []
     }
     return {
 
@@ -90,9 +120,12 @@ export const useCandidatos = defineStore('candidatos', () => {
         candidatosJunta,
         candidatosRepresentante,
         candidatoUpdate,
-        identificadorCandidato,
+        foto,
+        cargando,
+        idCandidato,
 
         obtenerTodosCandidatos,
-        editCandidato
+        editCandidato,
+        EliminarCandidato
     }
 })

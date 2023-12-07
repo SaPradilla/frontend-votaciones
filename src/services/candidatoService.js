@@ -15,11 +15,14 @@ export default {
         return api.get('/candidato/listar')
     },
     editarCandidato(id,data){
-        return api.get(`/candidato/editar/${id}`,data,{
+        return api.put(`/candidato/editar/${id}`,data,{
             headers: {
                 "Content-Type": "multipart/form-data"
             }
         })
     },
+    borrarCandidato(id){
+        return api.delete(`/candidato/borrar/${id}`)
+    }
 
 }

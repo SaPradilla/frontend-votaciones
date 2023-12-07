@@ -22,7 +22,6 @@ const selecciones = ref([
 onMounted(() => {
   auth.ObtenerToken()
   auth.isAdmin()
-  console.log(route.name)
 })
 
 watch(auth.token, () => {
