@@ -8,38 +8,38 @@ const auth = useAuth()
 const router = useRouter()
 const route = useRoute()
 const Opcion = useOpcion()
-const modalSelect = ref(false)
+
 
 const selecciones = ref([
-        'Alcalde',
-        'Gobernador',
-        'Junta comunal',
-        'Representante SENA',
-        'Asamblea'
+    'Alcalde',
+    'Gobernador',
+    'Junta comunal',
+    'Representante SENA',
+    'Asamblea'
 ])
 
 // Metodo ciclo de vida
 onMounted(() => {
   auth.ObtenerToken()
   auth.isAdmin()
+  console.log(route.name)
 })
 
 watch(auth.token, () => {
   auth.ObtenerToken()
   auth.isAdmin()
+  
 
 })
 
-const handleModalSelect = ()=>{
-  modalSelect.value = !modalSelect.value
-}
+
 
 </script>
 
 <template>
   <!-- Header -->
-  <div v-if="route.fullPath === '/admin'" class=""> 
-  <aside class="h-full bg-green-500 w-40 fixed top-0">
+  <div v-if="route.fullPath === '/admin'|| route.name === 'Votos'" class=""> 
+  <aside class="h-full bg-green-500 w-40 fixed top-0  shadow-2xl">
     <div class="contenedor-aside-admin flex flex-col justify-center items-center">
       <h1 class="text-white text-2xl font-semibold">Admin</h1>
       <h1 class="text-white text-2xl font-bold">Votaciones</h1>
@@ -67,21 +67,30 @@ const handleModalSelect = ()=>{
             <path  d="M164.47 195.63a8 8 0 0 1-6.7 12.37H10.23a8 8 0 0 1-6.7-12.37a95.83 95.83 0 0 1 47.22-37.71a60 60 0 1 1 66.5 0a95.83 95.83 0 0 1 47.22 37.71Zm87.91-.15a95.87 95.87 0 0 0-47.13-37.56A60 60 0 0 0 144.7 54.59a4 4 0 0 0-1.33 6a75.83 75.83 0 0 1 3.63 89.94a4 4 0 0 0 1.07 5.53a112.32 112.32 0 0 1 29.85 30.83a23.92 23.92 0 0 1 3.65 16.47a4 4 0 0 0 3.95 4.64h60.3a8 8 0 0 0 7.73-5.93a8.22 8.22 0 0 0-1.17-6.59Z"/></svg>
           <p class="text-1xl uppercase font-bold text-[#42a567] ">Candidatos</p>
         </div>
-        <!-- Votos  -->
-        <!-- :class=" Opcion.candidatos ? 'seleccion' : ''" -->
-        <div 
-          class="candidatos-opcion flex  items-center cursor-pointer flex-col " >
-          <div class="flex items-center  ">
 
-            <svg class=" fill-[#42a567] "  @click="handleModalSelect" xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 24 24"><path  d="M18 13h-.68l-2 2h1.91L19 17H5l1.78-2h2.05l-2-2H6l-3 3v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4l-3-3m-1-5.05l-4.95 4.95L8.5 9.36l4.96-4.95L17 7.95m-4.24-5.66L6.39 8.66a.996.996 0 0 0 0 1.41L11.34 15c.39.41 1.02.41 1.41 0l6.36-6.34a.996.996 0 0 0 0-1.41L14.16 2.3a.975.975 0 0 0-1.4-.01Z"/></svg>
+        <!-- Votos  -->
+        <div 
+        @click="Opcion.handleModalSelect()"
+       
+          class=" flex cursor-pointer flex-col " >
+          <div 
+          :class=" Opcion.votos ? 'seleccion' : ''" 
+          class="votos flex items-center  ">
+
+            <svg class=" fill-[#42a567] "   xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 24 24"><path  d="M18 13h-.68l-2 2h1.91L19 17H5l1.78-2h2.05l-2-2H6l-3 3v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4l-3-3m-1-5.05l-4.95 4.95L8.5 9.36l4.96-4.95L17 7.95m-4.24-5.66L6.39 8.66a.996.996 0 0 0 0 1.41L11.34 15c.39.41 1.02.41 1.41 0l6.36-6.34a.996.996 0 0 0 0-1.41L14.16 2.3a.975.975 0 0 0-1.4-.01Z"/></svg>
             <p class="text-1xl uppercase font-bold text-[#42a567] ">Votos</p>
           </div>
 
-           <div v-if="modalSelect" class=" z-10">
-            <!-- Hacer el modal de seleccion -->
-
-           </div>
         </div>
+      </div>
+      
+      <div v-if="Opcion.modalSelect"  @click="Opcion.handleModalSelect()"  class=" w-max fixed ml-[310px] mt-[300px] bg-green-500 z-10">
+          <!-- Hacer el modal de seleccion -->
+          <p @click="Opcion.redirigirVotos('Alcalde')" class=" font-bold text-white cursor-pointer  border-black hover:bg-green-300">Alcalde</p>
+          <p @click="Opcion.redirigirVotos('Gobernador')" class=" font-bold text-white cursor-pointer  border-black hover:bg-green-300">Gobernador</p>
+          <p @click="Opcion.redirigirVotos('Junta Comunal')" class=" font-bold text-white cursor-pointer  border-black hover:bg-green-300">Junta Comunal</p>
+          <p @click="Opcion.redirigirVotos('Representante SENA')" class=" font-bold text-white cursor-pointer  border-black hover:bg-green-300">Representante SENA</p>
+          <p @click="Opcion.redirigirVotos('Asamblea')" class=" font-bold text-white cursor-pointer  border-black hover:bg-green-300">Asamblea</p>
 
       </div>
     </div>
@@ -130,19 +139,22 @@ const handleModalSelect = ()=>{
 </template>
 <style scoped>
 .candidatos-opcion p,.candidatos-opcion svg,
-.dashbooard-opcion p,.dashbooard-opcion  svg
+.dashbooard-opcion p,.dashbooard-opcion  svg,
+.votos p,.votos  svg
 {
   transition: all 0.2s ease-in;
 }
 .candidatos-opcion:hover.candidatos-opcion p,.candidatos-opcion:hover.candidatos-opcion svg,
-.dashbooard-opcion:hover.dashbooard-opcion p,.dashbooard-opcion:hover.dashbooard-opcion svg
+.dashbooard-opcion:hover.dashbooard-opcion p,.dashbooard-opcion:hover.dashbooard-opcion svg,
+.votos:hover.votos p,.votos:hover.votos svg
 {
   fill: rgba(255, 255, 255, 0.668);
   color: rgba(255, 255, 255, 0.668);
 }
 
 .candidatos-opcion.seleccion p,.candidatos-opcion.seleccion svg,
-.dashbooard-opcion.seleccion p,.dashbooard-opcion.seleccion svg
+.dashbooard-opcion.seleccion p,.dashbooard-opcion.seleccion svg,
+.votos.seleccion p,.votos.seleccion svg
 
 {
   fill: white;

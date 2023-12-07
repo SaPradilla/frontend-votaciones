@@ -2,8 +2,8 @@ import axios from 'axios'
 
 // baseURL: 'https://api-votaciones.onrender.com/api'
 const api = axios.create({
-    // baseURL: 'https://backend-votaciones-production.up.railway.app/api'
-    baseURL:'http://localhost:7080/api'
+    baseURL: 'https://backend-votaciones-production.up.railway.app/api'
+    // baseURL:'http://localhost:7080/api'
 })
 
 export default api

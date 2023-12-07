@@ -27,16 +27,7 @@ const router = createRouter({
       component: () => import('../views/Formulario.vue'),
       props: true,
 
-    }
-    ,{
-
-      path: '/votos/:seleccion',
-      name: 'Votos',
-      component: () => import('../components/Votos.vue'),
-      // Ruta protegida
-      meta: { requireAuth: true },
-
-    }, 
+    },
     {
       path: '/login',
       name: 'Login',

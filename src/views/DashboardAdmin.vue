@@ -9,6 +9,8 @@
     import Votos from '../components/Votos.vue';
     import FormularioCandidato from '../components/FormularioCantidato.vue'
     import ListaCandidatos from '../components/ListaCandidatos.vue';
+    import EditCandidato from '../components/EditCandidato.vue';
+
     // Instancias
     const router = useRouter()
     const route = useRoute()
@@ -29,11 +31,6 @@
         seleccion.value = route.params.seleccion
     })
     // Metodos
-    const redirigirVotos = () => {
-        router.push({ name: 'Votos', params: { seleccion: seleccion.value } })
-    }
-
-
 </script>
 
 <template>
@@ -52,16 +49,19 @@
         >
             <FormularioCandidato v-if="Opcion.registroCandidato"/>
             <ListaCandidatos v-if="Opcion.incioCandidato"/>
+            <EditCandidato v-if="Opcion.editCandidato"/>
+
         </div>
 
-        <!-- <div 
+        <div 
             v-if="Opcion.votos"
             class="votos"
         >
-            <Votos/>
+        
+            <Votos v-if="Opcion.Seleccion"/>
         
 
-        </div> -->
+        </div>
         
 
 

@@ -13,6 +13,13 @@ export default {
     },
     obtenerTodosCandidatos(){
         return api.get('/candidato/listar')
-    }
+    },
+    editarCandidato(id,data){
+        return api.get(`/candidato/editar/${id}`,data,{
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        })
+    },
 
 }
